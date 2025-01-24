@@ -12,7 +12,7 @@ int BootableUSBCreation(const char* usb_path) {
         return E_PATHNOTVALID;
     }
 
-    if(!std::filesystem::is_block_file(usb_path)) {
+    if(!!std::filesystem::exist(usb_path) || std::filesystem::is_block_file(usb_path)) {
         return E_NOTBLOCKPATH;
     }
 
