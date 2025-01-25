@@ -4,6 +4,7 @@
 #include <string>
 #include <cstdio>
 #include <cstdlib>
+#include <cstring>
 #include <sstream>
 #include <stdexcept>
 #include "Partition/Partition.h"
@@ -15,7 +16,6 @@ struct DriveInfo {
     std::string model;
 };
 
-// Function to list drives using lsblk and store them in a vector
 std::vector<DriveInfo> listDrives() {
     std::vector<DriveInfo> drives;
     FILE* fp = popen("lsblk -d -o NAME,SIZE,MODEL --noheadings", "r");
@@ -23,14 +23,38 @@ std::vector<DriveInfo> listDrives() {
         throw std::runtime_error("Failed to list drives.");
     }
 
-    char name[128], size[128], model[128];
-    while (fscanf(fp, "%s %s %[^\n]", name, size, model) != EOF) {
+    char line[256];  
+    char name[128] = "N/A";  
+    char size[128] = "N/A";  
+    char model[128] = "N/A";  
+
+    while (fgets(line, sizeof(line), fp)) {
+        // Try to parse with 3 fields first
+        int count = sscanf(line, "%s %s %[^\n]", name, size, model);
+
+        // If only 2 fields were found, assume model is missing
+        if (count == 2) {
+            strcpy(model, "Unknown");
+        } 
+        // If only 1 field was found, assume size and model are missing
+        else if (count == 1) {
+            strcpy(size, "Unknown");
+            strcpy(model, "Unknown");
+        }
+
+        // Add to vector
         drives.push_back({name, size, model});
+
+        // Reset values for the next iteration
+        strcpy(name, "N/A");
+        strcpy(size, "N/A");
+        strcpy(model, "N/A");
     }
 
     pclose(fp);
     return drives;
 }
+
 
 // Function to display available drives with numbering
 void displayDrives(const std::vector<DriveInfo>& drives) {
