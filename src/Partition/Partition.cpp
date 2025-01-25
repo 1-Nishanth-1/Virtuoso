@@ -23,6 +23,7 @@ int DisplayPartitions(const char *path, std::vector <PartionInfo> *partInfo)
    int nparts, i;
 
    ls = blkid_probe_get_partitions(pr);
+
    nparts = blkid_partlist_numof_partitions(ls);
    printf("Number of partitions:%d\n", nparts);
 
