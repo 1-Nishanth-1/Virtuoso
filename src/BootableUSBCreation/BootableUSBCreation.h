@@ -3,6 +3,6 @@
 
 void DisplayUSB();
 void BootableUSBCreation(const char* usb_path, const char* iso_file);
-void checkSum();
+void checkSum(const char* iso_path);
 
 #endif

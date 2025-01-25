@@ -6,6 +6,7 @@
 #include <fstream>
 #include <string>
 #include <blkid/blkid.h> 
+#include <sys/stat.h>
 #include "../Constants/Constants.h"
 
 void DisplayUSB() {
@@ -13,8 +14,14 @@ void DisplayUSB() {
     system(command);
 }
 
-void checkSum() {
-    
+void checkSum(const char* iso_path) {
+    struct stat file_stat;
+    if(stat(iso_path, &file_stat) == -1) {
+        std::cerr << "Fetch details failed.\n";
+        return;
+    }
+    long long iso_size = file_stat.st_size;
+    printf("%lld\n", iso_size);
 }
 
 void BootableUSBCreation(const char* usb_path, const char* iso_file) {
@@ -54,21 +61,22 @@ void BootableUSBCreation(const char* usb_path, const char* iso_file) {
 
 
 
-    const std::string mount_command = "mount " + std::string(usb_path) + " /mnt";
-    std::cout << mount_command << std::endl;
-    // int mount_result = system(mount_command.c_str());
+    // const std::string mount_command = "mount " + std::string(usb_path) + " /mnt";
+    // std::cout << mount_command << std::endl;
+    // // int mount_result = system(mount_command.c_str());
     // if(mount_result != 0) {
     //     std::cerr << "Failed to mount the usb." << std::endl;
     //     return;
     // }
     
 
-    const std::string persistence_config = "echo -e \"/ union\" > /mnt/persistence.conf";
-    std::cout << persistence_config << std::endl;
-    // int persistence_result = system(persistence_config.c_str());
-    // if (persistence_result != 0) {
-    //     std::cerr << "Failed to create persistence configuration." << std::endl;
-    //     return;
-    // }
+//     const std::string persistence_config = "echo -e \"/ union\" > /mnt/persistence.conf";
+//     std::cout << persistence_config << std::endl;
+//     // int persistence_result = system(persistence_config.c_str());
+//     // if (persistence_result != 0) {
+//     //     std::cerr << "Failed to create persistence configuration." << std::endl;
+//     //     return;
+//     // }
     std::cout << "Successfully created Bootable USB" << std::endl;
+    return;
 }

@@ -60,47 +60,50 @@ void displayDrives(const std::vector<DriveInfo>& drives) {
 }
 
 int main() {
-    try {
-        std::vector<DriveInfo> drives = listDrives();
+    // std::string selectedDrive;
+    // try {
+    //     std::vector<DriveInfo> drives = listDrives();
 
-        if (drives.empty()) {
-            std::cerr << "No drives found.\n";
-            return 1;
-        }
+    //     if (drives.empty()) {
+    //         std::cerr << "No drives found.\n";
+    //         return 1;
+    //     }
 
-        displayDrives(drives);
+    //     displayDrives(drives);
 
-        int choice;
-        std::cout << "Select a drive (1-" << drives.size() << "): ";
-        std::cin >> choice;
+    //     int choice;
+    //     std::cout << "Select a drive (1-" << drives.size() << "): ";
+    //     std::cin >> choice;
 
-        if (choice < 1 || static_cast<size_t>(choice) > drives.size()) {
-            std::cerr << "Invalid selection.\n";
-            return 1;
-        }
+    //     if (choice < 1 || static_cast<size_t>(choice) > drives.size()) {
+    //         std::cerr << "Invalid selection.\n";
+    //         return 1;
+    //     }
 
-        std::string selectedDrive = "/dev/" + drives[choice - 1].name;
+    //     selectedDrive = "/dev/" + drives[choice - 1].name;
 
-        std::vector<PartionInfo> partInfo;
+    //     std::vector<PartionInfo> partInfo;
 
-        int ret= DisplayPartitions(selectedDrive.c_str(), &partInfo);
+    //     int ret= DisplayPartitions(selectedDrive.c_str(), &partInfo);
 
-        std::cout << "Select a drive (1-" << partInfo.size() << "): ";
-        std::cin >> choice;
+    //     std::cout << "Select a drive (1-" << partInfo.size() << "): ";
+    //     std::cin >> choice;
 
-        if (choice < 1 || static_cast<size_t>(choice) > partInfo.size()) {
-            std::cerr << "Invalid selection.\n";
-            return 1;
-        }
+    //     if (choice < 1 || static_cast<size_t>(choice) > partInfo.size()) {
+    //         std::cerr << "Invalid selection.\n";
+    //         return 1;
+    //     }
 
-        std::string selectedPartition=partInfo[choice - 1].name;
-        std::cout<<selectedPartition;
+    //     std::string selectedPartition=partInfo[choice - 1].name;
+    //     std::cout<<selectedPartition;
 
 
-    } catch (const std::exception& e) {
-        std::cerr << e.what() << "\n";
-        return 1;
-    } 
-   //BootableUSBCreation("/dev/sdd", "/home/sree/Downloads/archlinux-x86_64.iso");
+    // } catch (const std::exception& e) {
+    //     std::cerr << e.what() << "\n";
+    //     return 1;
+    // } 
+//    BootableUSBCreation(selectedDrive.c_str(), "/home/shein/Downloads/archlinux-x86_64.iso");
+//    std::cout<<selectedDrive.c_str();
+    checkSum("/home/shein/Downloads/archlinux-x86_64.iso");
    return 0;
 }
