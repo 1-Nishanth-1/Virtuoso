@@ -3,7 +3,7 @@
 #include <filesystem>
 #include <cstdlib>
 #include <unistd.h>
-#include <Constants.h>
+#include "../Constants/Constants.h"
 
 int FormatToSpecifiedFileSystem(const char* device, const char* fileSystem) {
     if (device.compare(0, 4, "/dev") != 0) {
@@ -16,7 +16,7 @@ int FormatToSpecifiedFileSystem(const char* device, const char* fileSystem) {
         return E_NOTBLOCKPATH;
     }
 
-    std::string command = "sudo mkfs." + fileSystem + " " + device;
+    std::string command = std::string("sudo mkfs.") + fileSystem + " " + device;
     
     int result = system(command.c_str());
     if (result != 0) {

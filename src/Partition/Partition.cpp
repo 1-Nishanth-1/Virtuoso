@@ -2,9 +2,10 @@
 #include <string.h>
 #include <err.h>
 #include <blkid/blkid.h>
+#include <parted/parted.h>
 #include "Partition.h"
 
-int displayPartitions(const char* path) {
+int DisplayPartitions(const char* path) {
    blkid_partlist list;
    blkid_probe pr = blkid_new_probe_from_filename(path);
    list = blkid_probe_get_partitions(pr);
@@ -53,4 +54,37 @@ int displayPartitions(const char* path) {
 
    return 0;
 }
+
+// int DiskPartition(const char* device, long long int size) {
+//    PedDevice* dev;
+//    PedDisk *disk;
+
+//    if(ped_init() != PED_SUCCESS) {
+//       std::cerr << "[FAILED] Failed to initialize libparted" << std::endl;
+//       return;
+//    }
+
+//    dev = ped_device_get(device);
+//    if(!dev) {
+//       std::cerr << "[FAILED] Failed to open device: " << device << std::endl;
+//       return;
+//    }
+   
+//    disk = ped_disk_new(dev);
+//    if(!disk) {
+//       std::cerr << "[FAILED] Failed to open disk"
+//       return;
+//    }
+
+//    if(!ped_disk_create(disk, PED_PARTITION_TABLE_TYPE_GPT)) {
+//       std::cerr << "[FAILED] Failed to create a partition table" << std::endl;
+//       return;
+//    }
+
+//    PedSector start = 2048;
+//    PedSector size = 
+
+
+//    PedPartition* part = ped_partition_new()
+// }
 

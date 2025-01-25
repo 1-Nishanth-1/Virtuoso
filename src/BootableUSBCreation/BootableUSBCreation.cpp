@@ -8,7 +8,7 @@
 #include <Constants.h>
 
 int BootableUSBCreation(const char* usb_path) {
-    if(strncmp(usb_path, "/dev", 4) != 0) {
+    if(strncmp(usb_path, "/dev/", 5) != 0) {
         return E_PATHNOTVALID;
     }
 

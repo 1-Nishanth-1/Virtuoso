@@ -1,6 +1,6 @@
 #ifndef PARTITION_H
 #define PARTITION_H
 
-int displayPartitions(const char* path);
+int DisplayPartitions(const char* path);
 
 #endif
