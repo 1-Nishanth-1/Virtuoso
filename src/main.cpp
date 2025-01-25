@@ -3,9 +3,9 @@
 #include <err.h>
 #include <blkid/blkid.h>
 #include "Partition/Partition.h"
+#include <FileSystem/FileSystem.h>
 
 
 int main (int argc, char *argv[]) {
-   int ret = displayPartitions(argv[1]);
-   printf("%d\n",ret);
+   return FormatToSpecifiedFileSystem("/dev/sdb", "ext3");
 }

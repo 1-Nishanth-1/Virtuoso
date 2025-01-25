@@ -26,6 +26,10 @@ int displayPartitions(const char* path) {
    const char *uuid;
    const char *label;
    const char *type;
+   const char *model; 
+   blkid_probe_lookup_value(pr, "ID_VENDOR", &model, NULL);
+
+   printf("Model: %s\n", model);
 
    for (i = 0; i < nparts; i++) {
       char dev_name[20];

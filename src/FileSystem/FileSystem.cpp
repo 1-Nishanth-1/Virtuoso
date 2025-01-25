@@ -5,12 +5,14 @@
 #include <unistd.h>
 #include <Constants.h>
 
-int FormatToSpecifiedFileSystem(const std::string& device, const std::string& fileSystem) {
+int FormatToSpecifiedFileSystem(const char* device, const char* fileSystem) {
     if (device.compare(0, 4, "/dev") != 0) {
         return E_PATHNOTVALID;
-    }
+    }int ret = displayPartitions(argv[1]);
+   printf("%d\n",ret);
 
-    if (!std::filesystem::exists(device) || !std::filesystem::is_block_file(device)) {
+    if (!std::filesystem::exists(device) || !std::filesystem::is_block_file(device))
+     {
         return E_NOTBLOCKPATH;
     }
 
