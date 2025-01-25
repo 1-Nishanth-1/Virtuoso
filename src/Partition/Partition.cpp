@@ -30,7 +30,7 @@ int DisplayPartitions(const char *path)
    const char *label;
    const char *type;
 
-   if (strncmp(path, "dev/nvme", 8) == 0)
+   if (strncmp(path, "/dev/nvme", 9) == 0)
    {
       for (i = 0; i < nparts; i++)
       {
