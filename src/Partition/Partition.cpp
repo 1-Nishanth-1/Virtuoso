@@ -2,7 +2,6 @@
 #include <string.h>
 #include <err.h>
 #include <blkid/blkid.h>
-#include <parted/parted.h>
 #include "Partition.h"
 
 int DisplayPartitions(const char* path) {
