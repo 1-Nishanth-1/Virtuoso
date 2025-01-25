@@ -30,23 +30,16 @@ std::vector<DriveInfo> listDrives() {
     char model[128] = "N/A";  
 
     while (fgets(line, sizeof(line), fp)) {
-        // Try to parse with 3 fields first
         int count = sscanf(line, "%s %s %[^\n]", name, size, model);
-
-        // If only 2 fields were found, assume model is missing
         if (count == 2) {
             strcpy(model, "Unknown");
         } 
-        // If only 1 field was found, assume size and model are missing
         else if (count == 1) {
             strcpy(size, "Unknown");
             strcpy(model, "Unknown");
         }
-
-        // Add to vector
         drives.push_back({name, size, model});
 
-        // Reset values for the next iteration
         strcpy(name, "N/A");
         strcpy(size, "N/A");
         strcpy(model, "N/A");
@@ -57,7 +50,6 @@ std::vector<DriveInfo> listDrives() {
 }
 
 
-// Function to display available drives with numbering
 void displayDrives(const std::vector<DriveInfo>& drives) {
     std::cout << "Available drives:\n";
     for (size_t i = 0; i < drives.size(); ++i) {
@@ -68,34 +60,47 @@ void displayDrives(const std::vector<DriveInfo>& drives) {
 }
 
 int main() {
-   //  try {
-   //      std::vector<DriveInfo> drives = listDrives();
+    try {
+        std::vector<DriveInfo> drives = listDrives();
 
-   //      if (drives.empty()) {
-   //          std::cerr << "No drives found.\n";
-   //          return 1;
-   //      }
+        if (drives.empty()) {
+            std::cerr << "No drives found.\n";
+            return 1;
+        }
 
-   //      displayDrives(drives);
+        displayDrives(drives);
 
-   //      int choice;
-   //      std::cout << "Select a drive (1-" << drives.size() << "): ";
-   //      std::cin >> choice;
+        int choice;
+        std::cout << "Select a drive (1-" << drives.size() << "): ";
+        std::cin >> choice;
 
-   //      if (choice < 1 || static_cast<size_t>(choice) > drives.size()) {
-   //          std::cerr << "Invalid selection.\n";
-   //          return 1;
-   //      }
+        if (choice < 1 || static_cast<size_t>(choice) > drives.size()) {
+            std::cerr << "Invalid selection.\n";
+            return 1;
+        }
 
-   //      std::string selectedDrive = "/dev/" + drives[choice - 1].name;
+        std::string selectedDrive = "/dev/" + drives[choice - 1].name;
 
-   //      // Call DisplayPartitions with the selected drive
-   //      return DisplayPartitions(selectedDrive.c_str());
+        std::vector<PartionInfo> partInfo;
 
-   //  } catch (const std::exception& e) {
-   //      std::cerr << e.what() << "\n";
-   //      return 1;
-   //  } 
+        int ret= DisplayPartitions(selectedDrive.c_str(), &partInfo);
+
+        std::cout << "Select a drive (1-" << partInfo.size() << "): ";
+        std::cin >> choice;
+
+        if (choice < 1 || static_cast<size_t>(choice) > partInfo.size()) {
+            std::cerr << "Invalid selection.\n";
+            return 1;
+        }
+
+        std::string selectedPartition=partInfo[choice - 1].name;
+        std::cout<<selectedPartition;
+
+
+    } catch (const std::exception& e) {
+        std::cerr << e.what() << "\n";
+        return 1;
+    } 
    BootableUSBCreation("/dev/sdd", "/home/sree/Downloads/archlinux-x86_64.iso");
    return 0;
 }
