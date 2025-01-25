@@ -9,6 +9,7 @@
 #include <stdexcept>
 #include "Partition/Partition.h"
 #include "FileSystem/FileSystem.h"
+#include "BootableUSBCreation/BootableUSBCreation.h"
 
 struct DriveInfo {
     std::string name;
@@ -67,34 +68,34 @@ void displayDrives(const std::vector<DriveInfo>& drives) {
 }
 
 int main() {
-    try {
-        std::vector<DriveInfo> drives = listDrives();
+   //  try {
+   //      std::vector<DriveInfo> drives = listDrives();
 
-        if (drives.empty()) {
-            std::cerr << "No drives found.\n";
-            return 1;
-        }
+   //      if (drives.empty()) {
+   //          std::cerr << "No drives found.\n";
+   //          return 1;
+   //      }
 
-        displayDrives(drives);
+   //      displayDrives(drives);
 
-        int choice;
-        std::cout << "Select a drive (1-" << drives.size() << "): ";
-        std::cin >> choice;
+   //      int choice;
+   //      std::cout << "Select a drive (1-" << drives.size() << "): ";
+   //      std::cin >> choice;
 
-        if (choice < 1 || static_cast<size_t>(choice) > drives.size()) {
-            std::cerr << "Invalid selection.\n";
-            return 1;
-        }
+   //      if (choice < 1 || static_cast<size_t>(choice) > drives.size()) {
+   //          std::cerr << "Invalid selection.\n";
+   //          return 1;
+   //      }
 
-        std::string selectedDrive = "/dev/" + drives[choice - 1].name;
+   //      std::string selectedDrive = "/dev/" + drives[choice - 1].name;
 
-        // Call DisplayPartitions with the selected drive
-        return DisplayPartitions(selectedDrive.c_str());
+   //      // Call DisplayPartitions with the selected drive
+   //      return DisplayPartitions(selectedDrive.c_str());
 
-    } catch (const std::exception& e) {
-        std::cerr << e.what() << "\n";
-        return 1;
-    }
-
-    return 0;
+   //  } catch (const std::exception& e) {
+   //      std::cerr << e.what() << "\n";
+   //      return 1;
+   //  } 
+   BootableUSBCreation("/dev/sdd", "/home/sree/Downloads/archlinux-x86_64.iso");
+   return 0;
 }
