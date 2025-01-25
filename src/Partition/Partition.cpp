@@ -3,8 +3,14 @@
 #include <err.h>
 #include <blkid/blkid.h>
 #include "Partition.h"
+#include <iostream>
+#include <vector>
 
-int DisplayPartitions(const char *path)
+
+
+
+
+int DisplayPartitions(const char *path, std::vector <PartionInfo> *partInfo) 
 {
    blkid_partlist list;
    blkid_probe pr = blkid_new_probe_from_filename(path);
@@ -30,6 +36,10 @@ int DisplayPartitions(const char *path)
    const char *label;
    const char *type;
 
+   PartionInfo pInfo;
+
+   int j=1;
+
    if (strncmp(path, "/dev/nvme", 9) == 0)
    {
       for (i = 0; i < nparts; i++)
@@ -39,15 +49,25 @@ int DisplayPartitions(const char *path)
          sprintf(dev_name, "%sp%d", path, (i + 1));
 
          pr = blkid_new_probe_from_filename(dev_name);
+         if(!pr){
+               nparts++;
+               continue;
+         }
+
          blkid_do_probe(pr);
+         strcpy(pInfo.name,dev_name);
 
          blkid_probe_lookup_value(pr, "UUID", &uuid, NULL);
+         strcpy(pInfo.uuid,uuid);
 
          blkid_probe_lookup_value(pr, "LABEL", &label, NULL);
+         strcpy(pInfo.label,label);
 
          blkid_probe_lookup_value(pr, "TYPE", &type, NULL);
-
-         printf("Name=%s, UUID=%s, LABEL=%s, TYPE=%s\n", dev_name, uuid, label, type);
+         strcpy(pInfo.type,type);
+         (*partInfo).push_back(pInfo);
+         printf("%d. Name=%s, UUID=%s, LABEL=%s, TYPE=%s\n",j, dev_name, uuid, label, type);
+         j++;
       }
    }
    else
@@ -59,19 +79,33 @@ int DisplayPartitions(const char *path)
          sprintf(dev_name, "%s%d", path, (i + 1));
 
          pr = blkid_new_probe_from_filename(dev_name);
+         if(!pr){
+            nparts++;
+            continue;
+         }
          blkid_do_probe(pr);
 
+         strcpy(pInfo.name,dev_name);
+
          blkid_probe_lookup_value(pr, "UUID", &uuid, NULL);
+         strcpy(pInfo.uuid,uuid);
 
          blkid_probe_lookup_value(pr, "LABEL", &label, NULL);
+         strcpy(pInfo.label,label);
 
          blkid_probe_lookup_value(pr, "TYPE", &type, NULL);
+         strcpy(pInfo.type,type);
 
-         printf("Name=%s, UUID=%s, LABEL=%s, TYPE=%s\n", dev_name, uuid, label, type);
+         
+         (*partInfo).push_back(pInfo);
+         printf("%d. Name=%s, UUID=%s, LABEL=%s, TYPE=%s\n",j, dev_name, uuid, label, type);
+         j++;
       }
+       
    }
 
    blkid_free_probe(pr);
 
    return 0;
 }
+
