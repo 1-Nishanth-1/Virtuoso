@@ -101,6 +101,6 @@ int main() {
         std::cerr << e.what() << "\n";
         return 1;
     } 
-   BootableUSBCreation("/dev/sdd", "/home/sree/Downloads/archlinux-x86_64.iso");
+   //BootableUSBCreation("/dev/sdd", "/home/sree/Downloads/archlinux-x86_64.iso");
    return 0;
 }
