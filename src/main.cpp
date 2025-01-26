@@ -106,7 +106,8 @@ int main() {
         std::string device_path;
         std::string iso_path;
 
-        std::cout << selectedDrive.c_str();
+        std::cout << "Enter ISO Path: ";
+        std::cin >> iso_path;
 
         if (iso_path.length() == 0) {
             std::cerr << "Invalid Path" << std::endl;
@@ -124,7 +125,7 @@ int main() {
         std::cout << "Enter partition size: ";
         std::cin >> size;
 
-        
+
         // if(path.length == 0 || flag.length == 0) {
         //     std::cerr << "Invalid arguments" << std::endl;
         //     return;
