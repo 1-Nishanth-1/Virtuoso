@@ -1,5 +1,5 @@
 #include <iostream>
-#include <string>
+#include <cstring>
 #include <filesystem>
 #include <cstdlib>
 #include <unistd.h>
@@ -29,5 +29,5 @@ void FormatToSpecifiedFileSystem(const char* device, const char* fileSystem) {
         return;
     }
 
-    return 0;
+    return;
 }

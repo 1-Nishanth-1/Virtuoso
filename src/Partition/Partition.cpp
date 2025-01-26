@@ -144,7 +144,10 @@ int PartitionDisk(const char *path, const char *flag, int size)
 {
    try
    {
-      int nparts = blkid_partlist_numof_partitions(ls);
+      blkid_partlist ls;
+      blkid_probe pr = blkid_new_probe_from_filename(path);
+      ls = blkid_probe_get_partitions(pr);
+      int nparts = blkid_partlist_numof_partitions(ls)+1;
       // \"o\nn\np\n\n\n\ny\nw\n\"
       std::string partition_command =
           "echo -e \"\nn\np\n\n\n +" + std::to_string(size) + flag +
@@ -169,13 +172,14 @@ int PartitionDisk(const char *path, const char *flag, int size)
 
       std::string command = "sudo mkfs -t " + std::string(fileSystem) +
                             " -L " + std::string(label) +
-                            " " + std::string(path) + "4";
-      result = system(command.c_str());
-      if (result != 0)
-      {
-         std::cerr << "Error: Failed to format the disk!" << std::endl;
-         return -1;
-      }
+                            " " + std::string(path) + std::to_string(nparts);
+      std::cout << command << std::endl;
+      // result = system(command.c_str());
+      // if (result != 0)
+      // {
+      //    std::cerr << "Error: Failed to format the disk!" << std::endl;
+      //    return -1;
+      // }
 
       return 0;
    }
