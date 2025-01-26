@@ -6,7 +6,7 @@
 #include "../Constants/Constants.h"
 
 void FormatToSpecifiedFileSystem(const char* device, const char* fileSystem) {
-    if (strncmp(device, 5, "/dev/") != 0) {
+    if (strncmp(device, "/dev/", 5) != 0) {
         std::cerr << "Not Permissible" << std::endl;
         return;
     }

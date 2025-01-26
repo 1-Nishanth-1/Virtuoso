@@ -118,18 +118,18 @@ int main() {
         std::string path, flag;
         int size;
 
-        std::cout << "Enter the device path (e.g., /dev/sdX): ";
-        std::cin >> path;
-
-        std::cout << "Enter partition type flag (e.g., primary, extended, logical): ";
+        std::cout << "Enter size flag: ";
         std::cin >> flag;
 
-        std::cout << "Enter partition size in MB: ";
+        std::cout << "Enter partition size: ";
+        std::cin >> size;
+
+        
         // if(path.length == 0 || flag.length == 0) {
         //     std::cerr << "Invalid arguments" << std::endl;
         //     return;
         // }
-        PartitionDisk(path.c_str(), flag.c_str(), size);
+        PartitionDisk(selectedDrive.c_str(), flag.c_str(), size);
     }       
 
    
