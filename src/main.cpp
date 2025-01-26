@@ -17,6 +17,13 @@ struct DriveInfo {
     std::string model;
 };
 
+void DisplayMenu() {
+    std::cout << "1. Format Disk\n";
+    std::cout << "2. Partition Drive and Label\n";
+    std::cout << "3. Create Bootable USB\n";
+    std::cout << "4. Exit\n";
+}
+
 std::vector<DriveInfo> listDrives() {
     std::vector<DriveInfo> drives;
     FILE* fp = popen("lsblk -d -o NAME,SIZE,MODEL --noheadings", "r");
@@ -61,7 +68,15 @@ void displayDrives(const std::vector<DriveInfo>& drives) {
 
 int main() {
     std::string selectedDrive;
+    int user_choice;
     try {
+        DisplayMenu();
+        std::cout << "Enter your choice: ";
+        std::cin >> user_choice;
+        
+        if(user_choice == 4) {
+            exit(0);
+        }
         std::vector<DriveInfo> drives = listDrives();
 
         if (drives.empty()) {
@@ -81,30 +96,42 @@ int main() {
         }
 
         selectedDrive = "/dev/" + drives[choice - 1].name;
-
-        std::vector<PartionInfo> partInfo;
-
-        int ret= DisplayPartitions(selectedDrive.c_str(), &partInfo);
-
-        std::cout << "Select a drive (1-" << partInfo.size() << "): ";
-        std::cin >> choice;
-
-        if (choice < 1 || static_cast<size_t>(choice) > partInfo.size()) {
-            std::cerr << "Invalid selection.\n";
-            return 1;
-        }
-
-        std::string selectedPartition=partInfo[choice - 1].name;
-        std::cout<<selectedPartition;
-
-
     } catch (const std::exception& e) {
         std::cerr << e.what() << "\n";
         return 1;
     } 
     std::cout<<selectedDrive.c_str();
-    BootableUSBCreation(selectedDrive.c_str(), "/home/shein/Downloads/archlinux-x86_64.iso");
+
+    if(user_choice == 3) {
+        std::string device_path;
+        std::string iso_path;
+
+        std::cout << selectedDrive.c_str();
+
+        if (iso_path.length() == 0) {
+            std::cerr << "Invalid Path" << std::endl;
+            return 0;
+        }
+        BootableUSBCreation(selectedDrive.c_str(), iso_path.c_str());
+    
+    } else if (user_choice == 2) {
+        std::string path, flag;
+        int size;
+
+        std::cout << "Enter the device path (e.g., /dev/sdX): ";
+        std::cin >> path;
+
+        std::cout << "Enter partition type flag (e.g., primary, extended, logical): ";
+        std::cin >> flag;
+
+        std::cout << "Enter partition size in MB: ";
+        // if(path.length == 0 || flag.length == 0) {
+        //     std::cerr << "Invalid arguments" << std::endl;
+        //     return;
+        // }
+        PartitionDisk(path.c_str(), flag.c_str(), size);
+    }       
+
    
-    // checkSum("/home/shein/Downloads/archlinux-x86_64.iso", "/dev/sda");
    return 0;
 }

@@ -12,6 +12,6 @@ struct PartionInfo{
 
 
 int DisplayPartitions(const char* path, std::vector<PartionInfo> *partInfo);
-bool SizeWithinBounds(const char* path, char flag, int size);
+int PartitionDisk(const char* path, const char* flag, int size);
 
 #endif

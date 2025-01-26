@@ -7,9 +7,6 @@
 #include <vector>
 
 
-
-
-
 int DisplayPartitions(const char *path, std::vector <PartionInfo> *partInfo) 
 {
    blkid_partlist list;
@@ -144,12 +141,24 @@ int DisplayPartitions(const char *path, std::vector <PartionInfo> *partInfo)
 //    return user_size <= device_size;
 // }
 
-// int PartitionDisk(const char* path, const char* flag, int size) {
-//    try {
-//       std::string partition_command = "echo -e \"o\nn\np\n\n\n+" + std::to_string(size) + std::to_string(flag) + "\nw | sudo fdisk " + std::to_string(path);
-//       int result = system(partition_command.c_str());
-//       return result;
-//    } catch(const std::exception& e) {
-//       std::cerr << "Exception: " + e.what() << std::endl;
-//    }
-// }
+int PartitionDisk(const char* path, const char* flag, int size) {
+    try {
+        std::string partition_command = 
+            "echo -e \"o\nn\np\n\n\n+" + std::to_string(size) + flag + 
+            "\\nw\" | sudo fdisk " + path;
+
+        std::cout << "Executing command: " << partition_command << std::endl;
+
+      //   int result = system(partition_command.c_str());
+      //   if (result != 0) {
+      //       std::cerr << "Error: Failed to partition the disk." << std::endl;
+      //       return -1;
+      //   }
+
+        return 0;
+    } catch (const std::exception& e) {
+        std::cerr << "Exception: " << e.what() << std::endl;
+        return -1;
+    }
+}
+
