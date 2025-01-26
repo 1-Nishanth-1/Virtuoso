@@ -62,7 +62,7 @@ void BootableUSBCreation(const char* usb_path, const char* iso_file) {
       std::cout << "Successfully created Bootable USB\n";
 
 
-    const std::string partition_command = "echo -e \"o\nn\np\n\n\n\ny\nw\n\" | sudo fdisk " + std::string(usb_path);
+    const std::string partition_command = "echo -e \"n\np\n\n\n\ny\nw\n\" | sudo fdisk " + std::string(usb_path);
     if(checkSum(iso_file, usb_path)) {
         int partition_result = system(partition_command.c_str());
         if (partition_result != 0) {
