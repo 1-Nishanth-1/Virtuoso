@@ -102,6 +102,18 @@ int main() {
     } 
     std::cout<<selectedDrive.c_str();
 
+    if(user_choice == 1) {
+        std::string device_path;
+        std::string fileSystem;
+        
+        std::cout << "Enter the device path: ";
+        std::cin >> device_path;
+        std::cout << "Enter the filesystem: ";
+        std::cin >> fileSystem;
+
+        // FormatToSpecifiedFileSystem(device_path.c_str(), fileSystem.c_str());        
+    }
+
     if(user_choice == 3) {
         std::string device_path;
         std::string iso_path;

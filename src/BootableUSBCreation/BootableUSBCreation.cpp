@@ -7,7 +7,6 @@
 #include <string>
 #include <blkid/blkid.h> 
 #include <sys/stat.h>
-#include "../Constants/Constants.h"
 
 void DisplayUSB() {
     system("lsusb");

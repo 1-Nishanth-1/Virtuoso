@@ -144,7 +144,7 @@ int PartitionDisk(const char *path, const char *flag, int size)
 {
    try
    {
-
+      int nparts = blkid_partlist_numof_partitions(ls);
       // \"o\nn\np\n\n\n\ny\nw\n\"
       std::string partition_command =
           "echo -e \"\nn\np\n\n\n +" + std::to_string(size) + flag +
@@ -159,9 +159,12 @@ int PartitionDisk(const char *path, const char *flag, int size)
          return -1;
       }
       std::string fileSystem;
+      std::cout << "Enter File System: ";
+
       std::cin >> fileSystem;
 
       std::string label;
+      std::cout << "Enter the label: ";
       std::cin >> label;
 
       std::string command = "sudo mkfs -t " + std::string(fileSystem) +

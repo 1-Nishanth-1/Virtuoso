@@ -3,16 +3,20 @@
 #include <filesystem>
 #include <cstdlib>
 #include <unistd.h>
-#include "../Constants/Constants.h"
 
 void FormatToSpecifiedFileSystem(const char* device, const char* fileSystem) {
     if (strncmp(device, "/dev/", 5) != 0) {
         std::cerr << "Not Permissible" << std::endl;
         return;
     }
+    
+    if(strcmp(device, "ext4") != 0 && strcmp(device, "ntfs") != 0 && strcmp(device, "ext3") != 0) {
+        std::cerr << "Not a valid file system" << std::endl;
+        return;
+    }
 
     if (!std::filesystem::exists(device) || !std::filesystem::is_block_file(device))
-     {
+    {
         std::cerr << "Invalid Path" << std::endl;
         return;
     }
