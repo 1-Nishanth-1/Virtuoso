@@ -1,0 +1,42 @@
+Cross-Platform Tool for Formatting Drives and Creating Bootable Linux USBs
+Problem Statement
+
+Develop a cross-platform tool with the following features:
+1. Disk Formatting
+
+    Allow users to select a hard disk or USB drive and format it to a specified file system (e.g., FAT32, NTFS, ext4).
+    Provide options to partition the drive and label partitions.
+
+2. Bootable USB Creation
+
+    Accept a Linux ISO file as input.
+    Write the ISO image to the USB drive, making it bootable.
+    Verify the integrity of the written image (e.g., using checksums).
+
+3. User-Friendly Interface
+
+    Develop either a CLI-based or GUI-based interface for usability.
+    Include safety checks to prevent accidental overwrites of system drives.
+
+Dependencies
+
+The tool relies on the following library:
+
+    libblkid
+        Install it on Debian-based systems with the following command:
+
+        sudo apt install libblkid-dev
+
+Compilation
+
+To compile the source code, use the following command:
+
+g++ -o main main.cpp ./Partition/Partition.cpp ./BootableUSBCreation/BootableUSBCreation.cpp ./FileSystem/FileSystem.cpp -lblkid
+
+Usage
+
+Run the compiled program with administrative privileges:
+
+sudo ./main
+
+Feel free to suggest improvements or submit pull requests for additional features! 😊
