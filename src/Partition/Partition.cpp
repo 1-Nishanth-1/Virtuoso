@@ -49,6 +49,10 @@ int DisplayPartitions(const char *path, std::vector<PartionInfo> *partInfo)
          if (!pr)
          {
             nparts++;
+            if (nparts > 30)
+            {
+               break;
+            }
             continue;
          }
 
@@ -80,6 +84,10 @@ int DisplayPartitions(const char *path, std::vector<PartionInfo> *partInfo)
          if (!pr)
          {
             nparts++;
+            if (nparts > 30)
+            {
+               break;
+            }
             continue;
          }
          blkid_do_probe(pr);

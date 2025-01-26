@@ -18,7 +18,7 @@ struct DriveInfo {
 };
 
 void DisplayMenu() {
-    std::cout << "1. Format Disk\n";
+    std::cout << "1. Format Partition\n";
     std::cout << "2. Partition Drive and Label\n";
     std::cout << "3. Create Bootable USB\n";
     std::cout << "4. Exit\n";
@@ -67,6 +67,7 @@ void displayDrives(const std::vector<DriveInfo>& drives) {
 }
 
 int main() {
+    int choice;
     std::string selectedDrive;
     int user_choice;
     try {
@@ -86,7 +87,7 @@ int main() {
 
         displayDrives(drives);
 
-        int choice;
+         choice;
         std::cout << "Select a drive (1-" << drives.size() << "): ";
         std::cin >> choice;
 
@@ -131,6 +132,36 @@ int main() {
         //     return;
         // }
         PartitionDisk(selectedDrive.c_str(), flag.c_str(), size);
+    }
+    else if(user_choice==1){
+        
+        std::vector<PartionInfo> partInfo;
+
+        int ret= DisplayPartitions(selectedDrive.c_str(), &partInfo);
+
+        std::cout << "Select a partition (1-" << partInfo.size() << "): ";
+        std::cin >> choice;
+
+        if (choice < 1 || static_cast<size_t>(choice) > partInfo.size()) {
+            std::cerr << "Invalid selection.\n";
+            return 1;
+        }
+
+        std::string selectedPartition=partInfo[choice - 1].name;
+        std::cout<<selectedPartition;
+        
+        std::string label;
+
+        std::string fileSystem;
+        std::cout<<"Enter File System (ntfs/ext4): ";
+        std::cin >> fileSystem;
+
+        std::cout<<"Enter Label: ";
+        std::cin>>label;
+
+        FormatToSpecifiedFileSystem(partInfo[choice - 1].name, fileSystem.c_str(), label.c_str());
+        
+
     }       
 
    
