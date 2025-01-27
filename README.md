@@ -1,29 +1,27 @@
-Cross-Platform Tool for Formatting Drives and Creating Bootable Linux USBs
-Problem Statement
+**Linux Tool for Formatting Drives and Creating Bootable Linux USBs**
 
-Develop a cross-platform tool with the following features:
-1. Disk Formatting
+**Has the following features:**
 
-    Allow users to select a hard disk or USB drive and format it to a specified file system (e.g., FAT32, NTFS, ext4).
-    Provide options to partition the drive and label partitions.
+**1. Disk Formatting**
 
-2. Bootable USB Creation
+Allow users to select a hard disk or USB drive and format it to a specified file system (e.g., FAT32, NTFS, ext4).  
+Provide options to partition the drive and label partitions.
 
-    Accept a Linux ISO file as input.
-    Write the ISO image to the USB drive, making it bootable.
-    Verify the integrity of the written image (e.g., using checksums).
+**2. Bootable USB Creation**
 
-3. User-Friendly Interface
+Accept a Linux ISO file as input.  
+Write the ISO image to the USB drive, making it bootable.  
+Verify the integrity of the written image using checksums.
 
-    Develop either a CLI-based or GUI-based interface for usability.
-    Include safety checks to prevent accidental overwrites of system drives.
+**3. User-Friendly Interface**
 
-Dependencies
+CLI-based interface for usability.  
+(To do: Include safety checks to prevent accidental overwrites of system drives.)
 
-The tool relies on the following library:
+**Dependencies**
 
-    libblkid
-        Install it on Debian-based systems with the following command:
+The tool relies on the library `libblkid`  
+Install it on Debian-based systems with the following command:
 
         sudo apt install libblkid-dev
 
@@ -31,12 +29,12 @@ Compilation
 
 To compile the source code, use the following command:
 
-g++ -o main main.cpp ./Partition/Partition.cpp ./BootableUSBCreation/BootableUSBCreation.cpp ./FileSystem/FileSystem.cpp -lblkid
+`g++ -o main main.cpp ./Partition/Partition.cpp ./BootableUSBCreation/BootableUSBCreation.cpp ./FileSystem/FileSystem.cpp -lblkid`
 
 Usage
 
 Run the compiled program with administrative privileges:
 
-sudo ./main
+`sudo ./main`
 
-Feel free to suggest improvements or submit pull requests for additional features! 😊
+Feel free to suggest improvements or submit pull requests for additional features.
