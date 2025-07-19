@@ -11,37 +11,44 @@
 #include "FileSystem/FileSystem.h"
 #include "BootableUSBCreation/BootableUSBCreation.h"
 
-struct DriveInfo {
+struct DriveInfo
+{
     std::string name;
     std::string size;
     std::string model;
 };
 
-void DisplayMenu() {
+void DisplayMenu()
+{
     std::cout << "1. Format Partition\n";
-    std::cout << "2. Partition Drive and Label\n";
+    std::cout << "2. Partition Drive\n";
     std::cout << "3. Create Bootable USB\n";
     std::cout << "4. Exit\n";
 }
 
-std::vector<DriveInfo> listDrives() {
+std::vector<DriveInfo> listDrives()
+{
     std::vector<DriveInfo> drives;
-    FILE* fp = popen("lsblk -d -o NAME,SIZE,MODEL --noheadings", "r");
-    if (fp == nullptr) {
+    FILE *fp = popen("lsblk -d -o NAME,SIZE,MODEL --noheadings", "r");
+    if (fp == nullptr)
+    {
         throw std::runtime_error("Failed to list drives.");
     }
 
-    char line[256];  
-    char name[128] = "N/A";  
-    char size[128] = "N/A";  
-    char model[128] = "N/A";  
+    char line[256];
+    char name[128] = "N/A";
+    char size[128] = "N/A";
+    char model[128] = "N/A";
 
-    while (fgets(line, sizeof(line), fp)) {
+    while (fgets(line, sizeof(line), fp))
+    {
         int count = sscanf(line, "%s %s %[^\n]", name, size, model);
-        if (count == 2) {
+        if (count == 2)
+        {
             strcpy(model, "Unknown");
-        } 
-        else if (count == 1) {
+        }
+        else if (count == 1)
+        {
             strcpy(size, "Unknown");
             strcpy(model, "Unknown");
         }
@@ -56,114 +63,120 @@ std::vector<DriveInfo> listDrives() {
     return drives;
 }
 
-
-void displayDrives(const std::vector<DriveInfo>& drives) {
+void displayDrives(const std::vector<DriveInfo> &drives)
+{
     std::cout << "Available drives:\n";
-    for (size_t i = 0; i < drives.size(); ++i) {
-        std::cout << i + 1 << ". " << drives[i].name << " (" 
-                  << drives[i].size << ", " 
+    for (size_t i = 0; i < drives.size(); ++i)
+    {
+        std::cout << i + 1 << ". " << drives[i].name << " ("
+                  << drives[i].size << ", "
                   << drives[i].model << ")\n";
     }
 }
 
-int main() {
+int main()
+{
     int choice;
     std::string selectedDrive;
     int user_choice;
-    try {
+    try
+    {
         DisplayMenu();
         std::cout << "Enter your choice: ";
         std::cin >> user_choice;
-        
-        if(user_choice == 4) {
+
+        if (user_choice == 4)
+        {
             exit(0);
         }
         std::vector<DriveInfo> drives = listDrives();
 
-        if (drives.empty()) {
+        if (drives.empty())
+        {
             std::cerr << "No drives found.\n";
             return 1;
         }
 
         displayDrives(drives);
 
-         choice;
         std::cout << "Select a drive (1-" << drives.size() << "): ";
         std::cin >> choice;
 
-        if (choice < 1 || static_cast<size_t>(choice) > drives.size()) {
+        if (choice < 1 || static_cast<size_t>(choice) > drives.size())
+        {
             std::cerr << "Invalid selection.\n";
             return 1;
         }
 
         selectedDrive = "/dev/" + drives[choice - 1].name;
-    } catch (const std::exception& e) {
+    }
+    catch (const std::exception &e)
+    {
         std::cerr << e.what() << "\n";
         return 1;
-    } 
-    std::cout<<selectedDrive.c_str();
+    }
+    std::cout << "You have selected " << selectedDrive.c_str() << std::endl;
 
-    if(user_choice == 3) {
-        std::string device_path;
+    if (user_choice == 3)
+    {
         std::string iso_path;
 
         std::cout << "Enter ISO Path: ";
         std::cin >> iso_path;
 
-        if (iso_path.length() == 0) {
+        if (iso_path.length() == 0)
+        {
             std::cerr << "Invalid Path" << std::endl;
             return 0;
         }
         BootableUSBCreation(selectedDrive.c_str(), iso_path.c_str());
-    
-    } else if (user_choice == 2) {
-        std::string path, flag;
+    }
+    else if (user_choice == 2)
+    {
+        std::string flag;
         int size;
 
-        std::cout << "Enter size flag: ";
+        std::cout << "Enter size flag (M for MB, G for GB): ";
         std::cin >> flag;
 
         std::cout << "Enter partition size: ";
         std::cin >> size;
 
-
-        // if(path.length == 0 || flag.length == 0) {
-        //     std::cerr << "Invalid arguments" << std::endl;
-        //     return;
-        // }
         PartitionDisk(selectedDrive.c_str(), flag.c_str(), size);
     }
-    else if(user_choice==1){
-        
+    else if (user_choice == 1)
+    {
+
         std::vector<PartionInfo> partInfo;
 
-        int ret= DisplayPartitions(selectedDrive.c_str(), &partInfo);
+        int ret = DisplayPartitions(selectedDrive.c_str(), &partInfo);
+        if (ret != 0)
+        {
+            return 1;
+        }
 
-        std::cout << "Select a partition (1-" << partInfo.size() << "): ";
+        std::cout << "Select a partition to format (1-" << partInfo.size() << "): ";
         std::cin >> choice;
 
-        if (choice < 1 || static_cast<size_t>(choice) > partInfo.size()) {
+        if (choice < 1 || static_cast<size_t>(choice) > partInfo.size())
+        {
             std::cerr << "Invalid selection.\n";
             return 1;
         }
 
-        std::string selectedPartition=partInfo[choice - 1].name;
-        std::cout<<selectedPartition;
-        
-        std::string label;
+        std::string selectedPartition = partInfo[choice - 1].name;
+        std::cout << "You have selected partition: " << selectedPartition << std::endl;
 
+        std::string label;
         std::string fileSystem;
-        std::cout<<"Enter File System (ntfs/ext4): ";
+        std::cout << "Enter File System (e.g., ntfs, ext4): ";
         std::cin >> fileSystem;
 
-        std::cout<<"Enter Label: ";
-        std::cin>>label;
+        std::cout << "Enter Label: ";
+        std::cin >> label;
 
-        FormatToSpecifiedFileSystem(partInfo[choice - 1].name, fileSystem.c_str(), label.c_str());
-        
+        FormatToSpecifiedFileSystem(selectedPartition.c_str(), fileSystem.c_str(), label.c_str());
+    }
 
-    }       
-
-   
-   return 0;
+    return 0;
 }
