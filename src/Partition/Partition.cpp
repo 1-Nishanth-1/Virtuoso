@@ -91,17 +91,8 @@ int PartitionDisk(const char *path, const char *flag, int size)
 {
    try
    {
-      // Using a 'Here Document' for a more reliable fdisk script
       std::string partition_command =
-          "sudo fdisk " + std::string(path) + " <<EOF\n"
-                                              "n\n"
-                                              "p\n"
-                                              "\n"
-                                              "\n"
-                                              "+" +
-          std::to_string(size) + flag + "\n"
-                                        "w\n"
-                                        "EOF";
+          "echo '," + std::to_string(size) + std::string(flag) + ",, *' | sudo sfdisk --append " + std::string(path);
 
       std::cout << "Executing command: \n"
                 << partition_command << std::endl;
@@ -109,12 +100,12 @@ int PartitionDisk(const char *path, const char *flag, int size)
       int result = system(partition_command.c_str());
       if (result != 0)
       {
-         std::cerr << "Error: Failed to partition the disk." << std::endl;
+         std::cerr << "Error: Failed to partition the disk with sfdisk." << std::endl;
          return -1;
       }
 
       std::cout << "Disk partitioned successfully. Rereading partition table..." << std::endl;
-      // It's good practice to reread the partition table after making changes
+
       system("sudo partprobe");
 
       return 0;
