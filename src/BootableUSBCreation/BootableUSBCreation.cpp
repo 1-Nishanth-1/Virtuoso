@@ -46,7 +46,6 @@ bool checkSum(const char *iso_path, const char *usb_path)
     fgets(compare_2, sizeof(compare_2), fp_iso);
     pclose(fp_iso);
 
-    // Trim newline characters
     compare_1[strcspn(compare_1, "\n")] = 0;
     compare_2[strcspn(compare_2, "\n")] = 0;
 
