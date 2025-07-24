@@ -27,14 +27,12 @@ Install it on Debian-based systems with the following command:
 
 Compilation
 
-To compile the source code, use the following command:
-
-`g++ -o main main.cpp ./Partition/Partition.cpp ./BootableUSBCreation/BootableUSBCreation.cpp ./FileSystem/FileSystem.cpp -lblkid`
+To compile the source code, run `make` in root folder.
 
 Usage
 
 Run the compiled program with administrative privileges:
 
-`sudo ./main`
+`sudo ./virtuoso`
 
 Feel free to suggest improvements or submit pull requests for additional features.
